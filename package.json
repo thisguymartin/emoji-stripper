@@ -4,11 +4,13 @@
   "description": "Remove Unwated Emoji's From Your Text",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@thisguymartin"
+  },
   "scripts": {
     "build": "tsc --noEmit && parcel build src/index.ts",
     "test:watch": "vitest run --watch",
