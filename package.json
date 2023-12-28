@@ -1,5 +1,5 @@
 {
-  "name": "@thisguymartin/emoji-stripper-ts ",
+  "name": "@thisguymartin/emoji-stripper-ts",
   "version": "1.0.7",
   "type": "module",
   "description": "Remove Unwated Emoji's From Your Text",
