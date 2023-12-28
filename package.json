@@ -1,15 +1,40 @@
 {
-  "name": "emoji-stripper",
-  "version": "1.0.0",
+  "name": "@thisguymartin/-stripper",
+  "version": "1.0.1",
   "description": "Remove Unwated Emoji's From Your Text",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
+  "repository": {
+    "url": "git://github.com/thisguymartin/barebone-logger.git"
   },
-  "author": "Martin Patino",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@thisguymartin"
+  },
+  "scripts": {
+    "build": "tsc --noEmit && parcel build src/index.ts",
+    "test:watch": "vitest run --watch",
+    "test": "vitest run --coverage",
+    "check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
-    "jest": "^24.5.0"
+    "@parcel/packager-ts": "2.10.3",
+    "@parcel/transformer-typescript-types": "2.10.3",
+    "@types/node": "^20.10.5",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "@vitest/coverage-v8": "^1.1.0",
+    "eslint": "^8.56.0",
+    "parcel": "^2.10.3",
+    "typescript": ">=3.0.0",
+    "vitest": "^1.1.0"
   }
 }
