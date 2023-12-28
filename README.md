@@ -1,4 +1,4 @@
-# Emoji Stripper TS
+# 👯 Emoji Stripper TS
 
 ## Overview
 Emoji Stripper TS is a lightweight, efficient Typescript library designed for removing emojis and emoticons from text. It's perfect for cleaning up user input, processing text for analysis, or any other situation where you need plain text free from graphical characters.
