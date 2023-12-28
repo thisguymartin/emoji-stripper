@@ -1,88 +1,54 @@
-emoji-stripper 👯
-===========
+# Emoji Stripper TS
 
-Strip annoying emoji from your text inputs on the fly with Prototype.String function 🖖👕🔥💃.
+## Overview
+Emoji Stripper TS is a lightweight, efficient Typescript library designed for removing emojis and emoticons from text. It's perfect for cleaning up user input, processing text for analysis, or any other situation where you need plain text free from graphical characters.
 
-Reason
--------
-I created this prototype function as I have bumpt into situation where users should not be allowed to add emojis to our inputs. Adding this string prototype function is much cleaner than passing data as a parameter in my opinion. 
+## Features
+- **Remove Emojis**: Efficiently strips all Unicode emojis from text.
+- **Remove Emoticons**: Option to also remove common emoticon patterns.
+- **Customizable**: Easily configurable to suit your specific needs.
 
-I hope it helps 😄
-
-
-API
----
-
-### String.emojiStripper() ###
-
-Returns a filtered of `string` with any emoji characters removed.
-
-
-Supported emoji
----------------
-
-Currently, it supports all emoji up to
-[Unicode Version 10](http://emojipedia.org/unicode-10.0/)
-except for emoji sequences.
-
-
-Install
--------
-
-### For Node.js ###
-
-Install with [npm](https://www.npmjs.org/):
+## Installation
+Install the package via npm:
 ```bash
-npm install --save emoji-stripper
+npm install emoji-stripper-tes
 ```
 
-Require it in your program:
-```js
-const emojiStripper = require("emoji-stripper")
+Or using Yarn:
+```bash
+yarn add emoji-stripper-tes
 ```
 
+## Usage
+Import and use the `stripEmojis` function in your JavaScript project.
 
+```javascript
+import stripEmojis from 'emoji-stripper-tes';
 
-Examples
---------
+const options = {
+  removeEmojis: true,
+  removeEmoticons: true
+};
 
-```js
-    const emojiStripper = require("emoji-stripper")
-
-    emoji = 'Here is a 😤 🥘 🎊 🎈 list of emojis that 🎉  should be empty 🔥 😆😡 🌞'
-    console.log(emoji.emojiStripper())
-
-// => "thumbs-up for staying strong without emoji please"
-
-    emoji = 'dealing with emoji😡 makes me feel like poop💩'
-    console.log(emoji.emojiStripper())
-// => "dealing with emoji makes me feel like poop"
-
-
-// reactjs in setState examples
-
-
-    handleChange(event) {
-      
-      const {value, name} = event.target
-       
-       if(typeof(value) == "string"){
-           // will prevent the user and will strip emojis
-            value = value.emojiStripper()
-        }
-
-        this.setState({
-             [name]: value
-        });
-  }
-
-
-
+const cleanedText = stripEmojis('Your text with emojis 😊 and emoticons :)', options);
+console.log(cleanedText); // 'Your text with emojis and emoticons '
 ```
 
+### Options
+`stripEmojis` function accepts the following options:
 
+```javascript
+type StripOptions = {
+  removeEmojis: boolean;      // Set true to remove emojis
+  removeEmoticons: boolean;   // Set true to remove emoticons
+};
+```
 
-License
--------
+## How It Works
+Emoji Stripper TES uses regular expressions to identify and remove emoji and emoticon characters from the provided text string. By default, it removes all Unicode emojis and a predefined set of common emoticons.
 
-ISC
+## Contributing
+Contributions to Emoji Stripper TES are welcome! Please read our contributing guidelines for more information.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
