@@ -1,10 +1,7 @@
 {
-  "name": "@thisguymartin/emoji-stripper",
+  "name": "@thisguymartin/emoji-stripper-ts",
   "version": "1.0.3",
   "description": "Remove Unwated Emoji's From Your Text",
-  "repository": {
-    "url": "git://github.com/thisguymartin/emoji-stripper.git"
-  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -12,9 +9,6 @@
   "files": [
     "dist"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@thisguymartin"
-  },
   "scripts": {
     "build": "tsc --noEmit && parcel build src/index.ts",
     "test:watch": "vitest run --watch",
