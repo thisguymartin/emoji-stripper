@@ -1,9 +1,9 @@
 {
-  "name": "@thisguymartin/-stripper",
-  "version": "1.0.1",
+  "name": "@thisguymartin/emoji-stripper",
+  "version": "1.0.3",
   "description": "Remove Unwated Emoji's From Your Text",
   "repository": {
-    "url": "git://github.com/thisguymartin/barebone-logger.git"
+    "url": "git://github.com/thisguymartin/emoji-stripper.git"
   },
   "type": "module",
   "main": "./dist/index.js",
