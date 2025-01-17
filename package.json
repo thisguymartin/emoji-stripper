@@ -32,7 +32,7 @@
   "scripts": {
     "build": "tsc --noEmit && parcel build src/index.ts",
     "test:watch": "vitest run --watch",
-    "test": "vitest run --coverage",
+    "test": "vitest run",
     "check": "tsc --noEmit",
     "lint": "eslint src --ext .ts"
   },
