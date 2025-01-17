@@ -1,24 +1,123 @@
-type StripOptions = {
-  removeEmojis: boolean;
-  removeEmoticons: boolean;
-};
+/**
+ * Configuration options for text stripping functionality
+ */
+export interface StripOptions {
+  /**
+   * Remove Unicode emojis when true
+   * @default true
+   */
+  removeEmojis?: boolean;
+  
+  /**
+   * Remove ASCII emoticons when true
+   * @default false
+   */
+  removeEmoticons?: boolean;
+  
+  /**
+   * Preserve specified emojis/emoticons
+   * @default []
+   */
+  preserve?: string[];
+  
+  /**
+   * Replace stripped content with this string
+   * @default ''
+   */
+  replaceWith?: string;
+}
 
-export default function stripEmojis(text: string, options:  StripOptions): string {
+// Comprehensive emoji ranges based on Unicode 15.0
+const EMOJI_RANGES = [
+  // Core emoji ranges
+  '\u{1F300}-\u{1F9FF}', // Miscellaneous Symbols, Emoticons, Transport & Map Symbols
+  '\u{1FA00}-\u{1FA6F}', // Extended-A
+  '\u{1FA70}-\u{1FAFF}', // Extended-B
+  '\u{2600}-\u{26FF}',   // Miscellaneous Symbols
+  '\u{2700}-\u{27BF}',   // Dingbats
+  '\u{2B50}\u{2B55}',    // Star and Circle
+  
+  // Less common ranges - can be removed if performance is a concern
+  '\u{FE00}-\u{FE0F}',   // Variation Selectors
+  '\u{1F1E6}-\u{1F1FF}', // Regional Indicator Symbols
+] as const;
+
+// Common ASCII emoticons
+const EMOTICON_PATTERNS = [
+  // Basic emoticons
+  ':\\)', ':\'\\)', ':\\(', ':\'\\(', ':D', ':P', ':\\|', ':\\*',
+  ';\\)', ';D', 'XD', 'xD',
+  '<3', '\\^_\\^', '>\\.<', 'T_T',
+  'o\\.o', 'O\\.O', 'o_O', 'O_o',
+  '-_-', 'u_u', 'v_v',
+  
+  // Advanced emoticons
+  '\\(:|-\\)', // Nose variations
+  '=\\)', '=\\(',
+  ':}', ':{',
+  ':3', ':B', ':J',
+] as const;
+
+/**
+ * Default options for the stripEmojis function
+ */
+const DEFAULT_OPTIONS: Required<StripOptions> = {
+  removeEmojis: true,
+  removeEmoticons: false,
+  preserve: [],
+  replaceWith: '',
+} as const;
+
+/**
+ * Strips emojis and/or emoticons from text based on provided options
+ * @param text - The input text to process
+ * @param options - Configuration options for stripping behavior
+ * @returns Processed text with emojis/emoticons removed or replaced
+ * @throws {TypeError} If input text is not a string
+ */
+export function stripEmojis(text: string, options: StripOptions = {}): string {
+  // Input validation
+  if (typeof text !== 'string') {
+    throw new TypeError('Input text must be a string');
+  }
+
+  // Merge options with defaults
+  const finalOptions: Required<StripOptions> = {
+    ...DEFAULT_OPTIONS,
+    ...options,
+  };
+
+  if (!finalOptions.removeEmojis && !finalOptions.removeEmoticons) {
+    return text;
+  }
+
   let result = text;
 
-  // set default options for removeEmojis and removeEmoticons
-  if (options.removeEmojis === undefined) {
-      options.removeEmojis = true;
+  // Process Unicode emojis
+  if (finalOptions.removeEmojis) {
+    const emojiPattern = EMOJI_RANGES.join('');
+    const emojiRegex = new RegExp(`[${emojiPattern}]`, 'gu');
+    result = result.replace(emojiRegex, finalOptions.replaceWith);
   }
 
-  if (options.removeEmojis) {
-      const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2B50}\u{2B55}\u{2E80}-\u{2E99}\u{2E9B}-\u{2EF3}\u{2F00}-\u{2FD5}\u{2FF0}-\u{2FFB}\u{3000}-\u{303F}\u{3040}-\u{309F}\u{30A0}-\u{30FF}\u{3100}-\u{312F}\u{3130}-\u{318F}\u{3190}-\u{319F}\u{31A0}-\u{31BF}\u{31C0}-\u{31EF}\u{31F0}-\u{31FF}\u{3200}-\u{32FF}\u{3300}-\u{33FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{A000}-\u{A48C}\u{A490}-\u{A4C6}\u{AC00}-\u{D7A3}]/gu;
-      result = result.replace(emojiRegex, '');
+  // Process ASCII emoticons
+  if (finalOptions.removeEmoticons) {
+    const emoticonPattern = EMOTICON_PATTERNS.join('|');
+    const emoticonRegex = new RegExp(emoticonPattern, 'g');
+    result = result.replace(emoticonRegex, finalOptions.replaceWith);
   }
 
-  if (options.removeEmoticons) {
-      const emoticonRegex = /(:\)|;\)|:\(|:\D|:P|:\||:\*|:'\(|:'\)|<3|\^_\^|>\.<|T_T)/g;
-      result = result.replace(emoticonRegex, '');
+  // Restore preserved items
+  if (finalOptions.preserve.length > 0) {
+    const preserved = new Set(finalOptions.preserve);
+    for (const item of preserved) {
+      // Escape special regex characters in the preserved item
+      const escapedItem = item.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const placeholder = `__PRESERVED_${Math.random().toString(36).slice(2)}__`;
+      result = result
+        .replace(new RegExp(escapedItem, 'g'), placeholder)
+        .replace(new RegExp(placeholder, 'g'), item);
+    }
   }
 
   return result;
