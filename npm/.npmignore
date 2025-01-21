@@ -1,0 +1,8 @@
+/src/
+/esm/stripEmojis.test.js
+/esm/stripEmojis.test.d.ts
+/script/stripEmojis.test.js
+/script/stripEmojis.test.d.ts
+/test_runner.js
+yarn.lock
+pnpm-lock.yaml

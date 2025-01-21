@@ -1,2 +1,3 @@
-import {stripEmojis} from './stripEmojis'
-export default stripEmojis
+import { stripEmojis } from "./stripEmojis.ts";
+
+export default stripEmojis;
