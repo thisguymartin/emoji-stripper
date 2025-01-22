@@ -12,21 +12,21 @@ await build({
   },
   package: {
     // package.json properties
-    name: "emoji-stripper-ts",
+    name: "emoji-stripper",
     version: Deno.args[0],
     description: "Remove Unwated Emoji's From Your Text",
     license: "MIT",
     repository: {
       type: "git",
-      url: "git+https://github.com/thisguymartin/emoji-stripper-ts.git",
+      url: "git+https://github.com/thisguymartin/emoji-stripper.git",
     },
     bugs: {
-      url: "https://github.com/thisguymartin/emoji-stripper-ts/issues",
+      url: "https://github.com/thisguymartin/emoji-stripper/issues",
     },
   },
   postBuild() {
     // steps to run after building and before running the tests
     // Deno.copyFileSync("LICENSE", "npm/LICENSE");
-    // Deno.copyFileSync("README.md", "npm/README.md");
+    Deno.copyFileSync("README.md", "npm/README.md");
   },
 });
