@@ -1,5 +1,6 @@
 {
   "name": "emoji-stripper",
+  "version": "1.0.12",
   "description": "Remove Unwated Emoji's From Your Text",
   "repository": {
     "type": "git",
