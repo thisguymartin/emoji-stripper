@@ -1,43 +1,84 @@
-// import { describe, it, expect } from 'vitest';
-// import {stripEmojis} from './stripEmojis'; // Adjust the import path as needed
+import { assertEquals, assertThrows } from "@std/assert";
+import { stripEmojis } from "./stripEmojis.ts";
 
-// describe('stripEmojis', () => {
-//   // Test for removing emojis
-//   it('should remove emojis when removeEmojis is true', () => {
-//     const text = 'Hello, world! 😀🌍';
-//     const result = stripEmojis(text, { removeEmojis: true });
-//     expect(result).toBe('Hello, world! ');
-//   });
+Deno.test("stripEmojis - should remove emojis by default", () => {
+  const text = "Hello, world! 😀🌍";
+  const result = stripEmojis(text);
+  assertEquals(result, "Hello, world! ");
+});
 
-//   // Test for not removing emojis when removeEmojis is false
-//   it('should not remove emojis when removeEmojis is false', () => {
-//     const text = 'Hello, world! 😀🌍';
-//     const result = stripEmojis(text, { removeEmojis: false });
-//     expect(result).toBe(text);
-//   });
+Deno.test("stripEmojis - should remove emojis when removeEmojis is true", () => {
+  const text = "Hello, world! 😀🌍";
+  const result = stripEmojis(text, { removeEmojis: true });
+  assertEquals(result, "Hello, world! ");
+});
 
-//   // Test for removing emoticons
-//   // it('should remove emoticons when removeEmoticons is true', () => {
-//   //   const text = 'Hello :) World :(';
-//   //   const result = stripEmojis(text, { removeEmojis: false });
-//   //   console.log(result);
-//   //   expect(result).toBe('Hello  World ');
-//   // });
+Deno.test("stripEmojis - should not remove emojis when removeEmojis is false", () => {
+  const text = "Hello, world! 😀🌍";
+  const result = stripEmojis(text, { removeEmojis: false });
+  assertEquals(result, text);
+});
 
-//   // Test for not removing emoticons when removeEmoticons is false
-//   it('should not remove emoticons when removeEmoticons is false', () => {
-//     const text = 'Hello :) World :(';
-//     const result = stripEmojis(text, { removeEmojis: false });
+Deno.test("stripEmojis - should preserve specified emojis", () => {
+  const text = "Hello 👋 World 🌍";
+  const result = stripEmojis(text, { preserve: ["👋"] });
+  assertEquals(result, "Hello 👋 World ");
+});
 
-//     console.log(result);
-//     expect(result).toBe(text);
-//   });
+Deno.test("stripEmojis - should replace emojis with custom string", () => {
+  const text = "Hello 👋 World 🌍";
+  const result = stripEmojis(text, { replaceWith: "[emoji]" });
+  assertEquals(result, "Hello [emoji] World [emoji]");
+});
 
-//   // Test for removing both emojis and emoticons
-//   it('should remove both emojis and emoticons when both flags are true', () => {
-//     const text = 'Happy coding! 😄';
-//     const result = stripEmojis(text, { removeEmojis: true });
-//     expect(result).toBe('Happy coding! ');
-//   });
+Deno.test("stripEmojis - should handle multiple preserved emojis", () => {
+  const text = "Hello 👋 World 🌍 Test 🚀";
+  const result = stripEmojis(text, { preserve: ["👋", "🌍"] });
+  assertEquals(result, "Hello 👋 World 🌍 Test ");
+});
 
-// });
+Deno.test("stripEmojis - should handle flag emojis", () => {
+  const text = "USA 🇺🇸 and UK 🇬🇧";
+  const result = stripEmojis(text);
+  assertEquals(result, "USA  and UK ");
+});
+
+Deno.test("stripEmojis - should handle complex emoji sequences", () => {
+  const text = "Family 👨‍👩‍👧‍👦 and heart ❤️";
+  const result = stripEmojis(text);
+  assertEquals(result, "Family  and heart ");
+});
+
+Deno.test("stripEmojis - should throw error for non-string input", () => {
+  assertThrows(
+    () => stripEmojis(123 as any),
+    TypeError,
+    "Input text must be a string",
+  );
+});
+
+Deno.test("stripEmojis - should handle empty string", () => {
+  const result = stripEmojis("");
+  assertEquals(result, "");
+});
+
+Deno.test("stripEmojis - should handle string with no emojis", () => {
+  const text = "Hello, world!";
+  const result = stripEmojis(text);
+  assertEquals(result, "Hello, world!");
+});
+
+Deno.test("stripEmojis - should handle string with only emojis", () => {
+  const text = "😀🌍👋🚀";
+  const result = stripEmojis(text);
+  assertEquals(result, "");
+});
+
+Deno.test("stripEmojis - should combine preserve and replaceWith options", () => {
+  const text = "Hello 👋 World 🌍 Test 🚀";
+  const result = stripEmojis(text, {
+    preserve: ["👋"],
+    replaceWith: "[removed]",
+  });
+  assertEquals(result, "Hello 👋 World [removed] Test [removed]");
+});
