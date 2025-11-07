@@ -40,8 +40,6 @@ const EMOJI_RANGES = [
   "\u{2300}-\u{23FF}", // Miscellaneous Technical
   "\u{2460}-\u{24FF}", // Enclosed Alphanumerics
   "\u{25A0}-\u{25FF}", // Geometric Shapes
-  "\u{2600}-\u{26FF}", // Miscellaneous Symbols
-  "\u{2700}-\u{27BF}", // Dingbats
   "\u{2900}-\u{297F}", // Supplemental Arrows-B
   "\u{2B00}-\u{2BFF}", // Miscellaneous Symbols and Arrows
   "\u{3030}\u{303D}\u{3297}\u{3299}", // Other symbols
@@ -83,10 +81,12 @@ const DEFAULT_OPTIONS: Required<StripOptions> = {
 } as const;
 
 /**
- * Creates a placeholder for preserved content
+ * Creates a unique placeholder for preserved content
+ * Uses timestamp and counter to ensure uniqueness without randomness concerns
  */
+let placeholderCounter = 0;
 const createPlaceholder = (index: number) =>
-  `__PRESERVED_${index}_${Math.random().toString(36).slice(2)}__`;
+  `__PRESERVED_${index}_${Date.now()}_${++placeholderCounter}__`;
 
 /**
  * Strips emojis and/or emoticons from text based on provided options

@@ -14,7 +14,7 @@ await build({
     // package.json properties
     name: "emoji-stripper",
     version: Deno.args[0],
-    description: "Remove Unwated Emoji's From Your Text",
+    description: "Remove Unwanted Emojis From Your Text",
     license: "MIT",
     repository: {
       type: "git",
